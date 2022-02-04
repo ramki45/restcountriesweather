@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="empty"></div>
+    <script>
+        var board = document.createElement("div")
+        board.style.width = "100%";
+        board.style.display = "flex";
+        board.style.flexDirection = "row";
+        board.style.flexWrap = "wrap";
+        
+
+        fetch("https://restcountries.com/v3.1/all")
+
+            .then(function (data) {
+                return data.json();
+            })
+            .then(function (dataObj) {
+                console.log(dataObj)
+
+                dataObj.forEach(function (element) {
+
+                    var mydiv = document.createElement('div')
+                    mydiv.style.width = "300px";
+                    mydiv.style.height = "300px";
+                    mydiv.style.display = "flex";
+                    mydiv.style.flexDirection = "column";
+                    mydiv.style.border = "2px solid black";
+                    mydiv.style.margin = "0px 20px 20px 30px";
+
+
+                    board.appendChild(mydiv)
+
+                    var imageBox = document.createElement('img')
+                    imageBox.style.width = "250px";
+                    imageBox.style.height = "100px";
+                    imageBox.style.margin = "20px 20px 0px 20px"
+                    imageBox.setAttribute("src", element.flags.png);
+                    mydiv.appendChild(imageBox);
+
+                    var cName = document.createElement("div")
+                    cName.style.width = "250px";
+                    cName.style.height = "50px";
+                    cName.style.textAlign = "center";
+                    cName.style.fontSize = "20px";
+                    cName.style.padding = "15px 0px 0px 0px";
+                    cName.style.fontFamily = " sans-serif";
+                    
+                    cName.innerHTML = element.name.common;
+
+                    mydiv.appendChild(cName);
+
+                    var Csign = document.createElement("div");
+                    Csign.style.width = "200px";
+                    Csign.style.height = "50px";
+                    Csign.style.textAlign = "center";
+                    Csign.style.fontFamily = " sans-serif";
+                 
+
+                    Csign.innerHTML =  element.car.signs;
+
+                    mydiv.appendChild(Csign);
+
+
+                    var button = document.createElement("button");
+                    button.innerHTML = "Weather";
+                    button.style.width = "100px";
+                    button.style.height = "30px";
+                    button.style.marginLeft = "50px";
+                    button.style.borderRadius = "10px";
+                    button.style.border = "none";
+                    button.style.fontSize = " 1.3em";
+                    button.style.cursor = "pointer";
+   
+                    button.addEventListener("click", function () {
+
+
+                        var popup = document.createElement("div")
+                        popup.style.width = "350px";
+                        popup.style.backgroundImage = "linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(10,121,9,0.3127626050420168) 35%, rgba(0,212,255,1) 100%)";
+                        popup.style.backgroundSize = "350px 500px"
+                        popup.style.borderRadius = "20px"
+                        popup.style.height = "500px";
+                        popup.style.fontSize = "20px"
+                        popup.style.textAlign = "center"
+                        popup.style.position = "fixed"
+                        popup.style.marginTop = "80px"
+                        popup.style.marginLeft = "500px"
+                        empty.appendChild(popup)
+
+                        var cancelButton = document.createElement("button");
+                        cancelButton.style.backgroundColor = "red";
+                        cancelButton.style.width = "30px";
+                        cancelButton.style.height = "20px";
+                        cancelButton.style.position = "fixed"
+                        cancelButton.style.marginLeft = "135px";
+                        cancelButton.style.fontSize = "25px";
+                        cancelButton.innerHTML = "X";
+                        cancelButton.style.border = "none";
+                        cancelButton.style.background = "transparent";
+                      
+                        cancelButton.addEventListener("click", function () {
+                            popup.style.display = 'none';
+                        })
+                        popup.appendChild(cancelButton)
+
+
+                        var cname = document.createElement("h3");
+                        cname.style.textAlign = "center";
+                        cname.style.height = "50px";
+                        cname.style.fontFamily = "Georgia, 'Times New Roman', Times, serif";
+                        cname.style.textAlign = "center";
+                        cname.innerHTML = element.name.common + " " + "Weather Report"
+                        popup.appendChild(cname)
+
+                        fetch("https://api.openweathermap.org/data/2.5/weather?q=" + cName.innerHTML +
+                            "&appid=6959a3a0c222d94dd018307469720743")
+                            .then(function (data1) {
+                                return data1.json();
+                            })
+                            .then(function (obj) {
+                                console.log(obj)
+
+                                var name1 = document.createElement("h3")
+                                name1.innerHTML = "Temperature : " + obj.main.temp;
+                                name1.style.fontFamily = "Arial, Helvetica, sans-serif";
+                                popup.appendChild(name1)
+
+                                var name2 = document.createElement("h3")
+                                name2.innerHTML = "Temperature-Min : " + obj.main.temp_min;
+                                name2.style.fontFamily = "Arial, Helvetica, sans-serif";
+                                popup.appendChild(name2)
+
+                                var name3 = document.createElement("h3")
+                                name3.innerHTML = "Temperatures-Max : " + obj.main.temp_max;
+                                name3.style.fontFamily = "Arial, Helvetica, sans-serif";
+                                popup.appendChild(name3)
+
+                                var name4 = document.createElement("h3")
+                                name4.innerHTML = "Feels-like : " + obj.main.feels_like;
+                                name4.style.fontFamily = "Arial, Helvetica, sans-serif";
+                                popup.appendChild(name4)
+
+                                var name5 = document.createElement("h3")
+                                name5.innerHTML = "Grnd-level : " + obj.main.grnd_level;
+                                name5.style.fontFamily = "Arial, Helvetica, sans-serif";
+                                popup.appendChild(name5)
+
+
+                                var name6 = document.createElement("h3")
+                                name6.innerHTML = "Humidity : " + obj.main.humidity;
+                                name6.style.fontFamily = "Arial, Helvetica, sans-serif";
+                                popup.appendChild(name6)
+
+                                var name7 = document.createElement("h3")
+                                name7.innerHTML = "Pressure : " + obj.main.pressure;
+                                name7.style.fontFamily = "Arial, Helvetica, sans-serif";
+                                popup.appendChild(name7)
+
+                                var name8 = document.createElement("h3")
+                                name8.innerHTML = "Sea-level : " + obj.main.sea_level;
+                                name8.style.fontFamily = "Arial, Helvetica, sans-serif";
+                                popup.appendChild(name8)
+
+                            })
+                    })
+                  
+                    mydiv.appendChild(button)
+
+                })
+
+            })
+
+            .catch(function (err) {
+                console.log(err);
+            })
+
+        document.body.appendChild(board);
+    </script>
+</body>
+</html>
